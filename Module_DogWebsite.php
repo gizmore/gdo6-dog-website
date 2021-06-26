@@ -13,7 +13,8 @@ final class Module_DogWebsite extends GDO_Module
     public function getTheme() { return 'dog'; }
     public function getDependencies() {
         return [
-            'Classic', 'Dog', 'DogAuth', 'Login', 'Register', 'Admin',
+            'Bootstrap5Theme', 'JQuery',
+            'Dog', 'DogAuth', 'Login', 'Register', 'Admin',
             'DogIRC', 'DogTick', 'DogShadowdogs', 'DogIRCAutologin',
             'DogIRCSpider', 'DogGreetings', 'DogBlackjack',
             'News', 'PM', 'Quotes', 'Shoutbox', 'Forum', 'Links', 'Download',
