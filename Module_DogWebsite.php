@@ -2,6 +2,8 @@
 namespace GDO\DogWebsite;
 
 use GDO\Core\GDO_Module;
+use GDO\UI\GDT_Page;
+use GDO\UI\GDT_Headline;
 
 final class Module_DogWebsite extends GDO_Module
 {
@@ -18,7 +20,8 @@ final class Module_DogWebsite extends GDO_Module
             'DogIRC', 'DogTick', 'DogShadowdogs', 'DogIRCAutologin',
             'DogIRCSpider', 'DogGreetings', 'DogBlackjack',
             'News', 'PM', 'Quotes', 'Shoutbox', 'Forum', 'Links', 'Download',
-            'Math', 'Contact', 'Todo',
+            'Math', 'Contact', 'Todo', 'Perf', 'Website',
+            'Markdown',
         ];
     }
     
@@ -43,6 +46,13 @@ final class Module_DogWebsite extends GDO_Module
     public function onIncludeScripts()
     {
         
+    }
+    
+    public function onInitSidebar()
+    {
+        $nav = GDT_Page::$INSTANCE->topNav;
+        $head = GDT_Headline::make()->level(1)->textRaw('DOG!');
+        $nav->addField($head);
     }
     
 }
