@@ -10,10 +10,10 @@ final class Module_DogWebsite extends GDO_Module
     ##############
     ### Module ###
     ##############
-    public $module_priority = 100;
-    public function isSiteModule() { return true; }
-    public function getTheme() { return 'dog'; }
-    public function getDependencies() {
+    public int $priority = 100;
+    public function isSiteModule() : bool { return true; }
+    public function getTheme() : string { return 'dog'; }
+    public function getDependencies() : array {
         return [
             'Bootstrap5Theme', 'JQuery', 'Avatar',
             'Dog', 'DogAuth', 'Login', 'Register', 'Admin',
@@ -25,7 +25,7 @@ final class Module_DogWebsite extends GDO_Module
         ];
     }
     
-    public function onInstall()
+    public function onInstall() : void
     {
         DOG_Install::onInstall();
     }
@@ -33,7 +33,7 @@ final class Module_DogWebsite extends GDO_Module
     ##############
     ### Config ###
     ##############
-    public function getConfig()
+    public function getConfig() : array
     {
         return [
             
@@ -43,12 +43,12 @@ final class Module_DogWebsite extends GDO_Module
     ############
     ### Init ###
     ############
-    public function onIncludeScripts()
+    public function onIncludeScripts() : void
     {
         
     }
     
-    public function onInitSidebar()
+    public function onInitSidebar() : void
     {
         $nav = GDT_Page::$INSTANCE->topNav;
         $head = GDT_Headline::make()->level(1)->textRaw('DOG!');
