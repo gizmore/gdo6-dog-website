@@ -20,7 +20,7 @@ final class Module_DogWebsite extends GDO_Module
             'DogIRC', 'DogTick', 'DogShadowdogs', 'DogIRCAutologin',
             'DogIRCSpider', 'DogGreetings', 'DogBlackjack',
             'News', 'PM', 'Quotes', 'Shoutbox', 'Forum', 'Links', 'Download',
-            'Math', 'Contact', 'Todo', 'Perf', 'Website',
+            'Math', 'Contact', 'Todo', 'Perf',
             'Markdown',
         ];
     }
