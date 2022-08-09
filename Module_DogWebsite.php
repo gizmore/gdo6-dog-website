@@ -25,6 +25,11 @@ final class Module_DogWebsite extends GDO_Module
         ];
     }
     
+    public function onLoadLanguage() : void
+    {
+    	$this->loadLanguage('lang/dog');
+    }
+    
     public function onInstall() : void
     {
         DOG_Install::onInstall();
