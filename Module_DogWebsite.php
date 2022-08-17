@@ -55,7 +55,7 @@ final class Module_DogWebsite extends GDO_Module
     
     public function onInitSidebar() : void
     {
-        $nav = GDT_Page::$INSTANCE->topNav;
+        $nav = GDT_Page::$INSTANCE->topBar();
         $head = GDT_Headline::make()->level(1)->textRaw('DOG!');
         $nav->addField($head);
     }
