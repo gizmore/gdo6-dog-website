@@ -12,7 +12,7 @@ final class Module_DogWebsite extends GDO_Module
     ##############
     public int $priority = 100;
     public function isSiteModule() : bool { return true; }
-    public function getTheme() : string { return 'dog'; }
+    public function getTheme() : ?string { return 'dog'; }
     public function getDependencies() : array {
         return [
             'Bootstrap5Theme', 'JQuery', 'Avatar',
