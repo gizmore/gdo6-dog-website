@@ -2,6 +2,8 @@
 namespace GDO\DogWebsite;
 
 use GDO\Core\GDO_Module;
+use GDO\Core\Method;
+use GDO\DogWebsite\Method\Home;
 use GDO\UI\GDT_Headline;
 use GDO\UI\GDT_Page;
 
@@ -23,6 +25,7 @@ final class Module_DogWebsite extends GDO_Module
 			'Admin',
 			'Avatar',
 			'Bootstrap5Theme',
+            'Captcha',
 			'Contact',
 			'Dog',
 			'DogAuth',
@@ -31,8 +34,10 @@ final class Module_DogWebsite extends GDO_Module
 			'DogIRC',
 			'DogIRCAutologin',
 			'DogIRCSpider',
-			'DogShadowdogs',
-			'DogTick',
+            'DogOracle',
+            'DogShadowdogs',
+            'DogTelegram',
+            'DogTick',
 			'Download',
 			'Forum',
 			'JQuery',
@@ -47,7 +52,12 @@ final class Module_DogWebsite extends GDO_Module
 		];
 	}
 
-	public function onLoadLanguage(): void
+    public function defaultMethod(): Method
+    {
+        return Home::make();
+    }
+
+    public function onLoadLanguage(): void
 	{
 		$this->loadLanguage('lang/dog');
 	}
