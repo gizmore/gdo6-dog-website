@@ -5,6 +5,7 @@ use GDO\Core\GDO_Module;
 use GDO\Core\Method;
 use GDO\DogWebsite\Method\Home;
 use GDO\UI\GDT_Headline;
+use GDO\UI\GDT_Link;
 use GDO\UI\GDT_Page;
 
 final class Module_DogWebsite extends GDO_Module
@@ -70,7 +71,14 @@ final class Module_DogWebsite extends GDO_Module
 		DOG_Install::onInstall();
 	}
 
-	##############
+    public function getClasses(): array
+    {
+        return [
+            GDO_WebMessage::class,
+        ];
+    }
+
+    ##############
 	### Config ###
 	##############
 	public function getConfig(): array
@@ -90,6 +98,9 @@ final class Module_DogWebsite extends GDO_Module
 		$nav = GDT_Page::$INSTANCE->topBar();
 		$head = GDT_Headline::make()->level(1)->textRaw('DOG!');
 		$nav->addField($head);
+
+        $bar = GDT_Page::instance()->leftBar();
+        $bar->addField(GDT_Link::make('dog_chat')->href($this->href('Chat')));
 	}
 
 }
