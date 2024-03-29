@@ -1,9 +1,18 @@
 <?php
 namespace GDO\DogWebsite;
 
+use GDO\Core\Application;
+use GDO\Core\GDO_DBException;
 use GDO\Core\GDO_Module;
+use GDO\Core\GDT_Checkbox;
 use GDO\Core\Method;
+use GDO\Dog\Dog;
+use GDO\Dog\DOG_Connector;
+use GDO\Dog\DOG_Room;
+use GDO\Dog\DOG_Server;
+use GDO\DogWebsite\Connector\Web;
 use GDO\DogWebsite\Method\Home;
+use GDO\PM\GDO_PM;
 use GDO\UI\GDT_Headline;
 use GDO\UI\GDT_Link;
 use GDO\UI\GDT_Page;
@@ -27,6 +36,7 @@ final class Module_DogWebsite extends GDO_Module
 			'Avatar',
 			'Bootstrap5Theme',
             'Captcha',
+            'ChatGPT',
 			'Contact',
 			'Dog',
 			'DogAuth',
@@ -47,6 +57,7 @@ final class Module_DogWebsite extends GDO_Module
 			'JQuery',
 			'Links',
 			'Markdown',
+            'Moment',
 			'News',
 			'Perf',
 			'PM',
@@ -66,7 +77,10 @@ final class Module_DogWebsite extends GDO_Module
 		$this->loadLanguage('lang/dog');
 	}
 
-	public function onInstall(): void
+    /**
+     * @throws GDO_DBException
+     */
+    public function onInstall(): void
 	{
 		DOG_Install::onInstall();
 	}
@@ -84,23 +98,75 @@ final class Module_DogWebsite extends GDO_Module
 	public function getConfig(): array
 	{
 		return [
-
+            GDT_Checkbox::make('dog_webchat_public')->initial('1'),
+            GDT_Checkbox::make('dog_webchat_private')->initial('1'),
 		];
 	}
+
+    public function cfgAllowPublic(): bool
+    {
+        return $this->getConfigValue('dog_webchat_public');
+    }
+
+    public function cfgAllowPrivate(): bool
+    {
+        return $this->getConfigValue('dog_webchat_private');
+    }
 
 	############
 	### Init ###
 	############
-	public function onIncludeScripts(): void {}
+	public function onIncludeScripts(): void
+    {
+        $this->addJS('gdo_dog.js');
+    }
 
-	public function onInitSidebar(): void
+    public function onModuleInit(): void
+    {
+        DOG_Connector::register(new Web());
+    }
+
+    public function onInitSidebar(): void
 	{
 		$nav = GDT_Page::$INSTANCE->topBar();
 		$head = GDT_Headline::make()->level(1)->textRaw('DOG!');
 		$nav->addField($head);
 
         $bar = GDT_Page::instance()->leftBar();
-        $bar->addField(GDT_Link::make('dog_chat')->href($this->href('Chat')));
+        $bar->addField(GDT_Link::make('dog_chat')->href($this->href('PublicChat')));
+        $bar->addField(GDT_Link::make('dog_private_chat')->href($this->href('PrivateChat')));
 	}
+
+    /**
+     * @throws GDO_DBException
+     */
+    public function getDogServer(): DOG_Server
+    {
+        return DOG_Server::getByConnector('Web');
+    }
+
+    /**
+     * @throws GDO_DBException
+     */
+    public function getPublicRoom(): DOG_Room
+    {
+        return DOG_Room::getByName($this->getDogServer(), 'PublicChat');
+    }
+
+    /**
+     * @throws GDO_DBException
+     */
+    public function hookPMSent(GDO_PM $pmFrom, GDO_PM $pmTo): void
+    {
+        $old = Application::$MODE;
+        if ($pmTo->getReceiver() === $this->getDogServer()->getDog()->getGDOUser())
+        {
+            Application::$MODE = $old;
+            GDO_WebMessage::blank([
+                'dw_text' => $pmFrom->getMessage(),
+                'dw_user' => $pmFrom->getSender()->getID(),
+            ])->insert();
+        }
+    }
 
 }
