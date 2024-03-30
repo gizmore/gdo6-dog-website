@@ -47,6 +47,7 @@ final class Module_DogWebsite extends GDO_Module
 			'DogIRCAutologin',
 			'DogIRCSpider',
             'DogOracle',
+            'DogRSS',
             'DogShadowdogs',
             'DogSlapwarz',
             'DogTelegram',

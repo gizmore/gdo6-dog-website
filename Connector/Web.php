@@ -86,7 +86,7 @@ final class Web extends DOG_Connector
      */
     private function processMessage(GDO_WebMessage $msg): void
     {
-        echo "Web << {$msg->getUser()->renderUserName()} << {$msg->getText()}\n";
+        echo "Web << {$msg->getCreator()->renderUserName()} << {$msg->getText()}\n";
         $m = DOG_Message::make()->text($msg->getText())
             ->user($this->getUsersDogUser($msg))
             ->room($msg->processed()->getRoom())
@@ -96,7 +96,7 @@ final class Web extends DOG_Connector
 
     private function getUsersDogUser(GDO_WebMessage $msg): DOG_User
     {
-        $gdoUser = $msg->getUser();
+        $gdoUser = $msg->getCreator();
         return DOG_User::getOrCreateUser($this->server, $gdoUser->renderUserName());
     }
 
